@@ -14,17 +14,19 @@
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
+#include <variant>
+#include <optional>
 
 // ---- Name assignment (variables and constants) ------------------------------
 
 // TODO: assign the current Bitcoin mining reward (in BTC)
-inline double MINING_REWARD = 0.0;
+inline double MINING_REWARD = 3.125;
 
 // TODO: assign the current block height as an integer
-inline int current_block_height = 0;
+inline int current_block_height = 850000;
 
 // TODO: assign the number of satoshis in one Bitcoin
-inline long long BTC_TO_SATS = 0;
+inline long long BTC_TO_SATS = 100000000;
 
 // ---- Supporting types -------------------------------------------------------
 
