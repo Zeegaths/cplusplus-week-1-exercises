@@ -159,6 +159,7 @@ std::pair<bool, std::string> validate_block_height(const std::string& height) {
 std::map<int, long long> halving_schedule(const std::vector<int>& blocks) {
     // TODO: base reward = 50 * BTC_TO_SATS sats, halve every 210_000 blocks
     //       return a map of {block_height: reward_in_sats}
+    std::map<int, long long> schedule;
     for (int block : blocks) {
         int halvings = block / 210000;
         long long reward = static_cast<long long>(50 * BTC_TO_SATS) >> halvings; 
