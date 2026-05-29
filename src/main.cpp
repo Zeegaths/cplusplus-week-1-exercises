@@ -97,7 +97,7 @@ std::optional<std::pair<std::size_t, double>> find_high_fee(const std::vector<do
 
 std::tuple<std::string, double> get_wallet_details() {
     // TODO: return a tuple of (wallet_name, balance)    
-    return std::make_tuple("Alice", 50.0);    
+    return std::make_tuple("satoshi_wallet", 50.0);   
 }
 
 std::string get_tx_status(const std::map<std::string, std::string>& tx_pool, const std::string& txid) {
@@ -148,7 +148,10 @@ std::pair<bool, std::string> validate_block_height(int height) {
 
 std::pair<bool, std::string> validate_block_height(double height) {
     // TODO: a non-integer block height should always be rejected
-    return {false, "Block height must be an integer"};
+    if (height != static_cast<int>(height)) {
+        return {false, "Block height must be an integer"};
+    }
+    return validate_block_height(static_cast<int>(height));
 }
 
 std::pair<bool, std::string> validate_block_height(const std::string& height) {
@@ -165,12 +168,17 @@ std::map<int, long long> halving_schedule(const std::vector<int>& blocks) {
         long long reward = static_cast<long long>(50 * BTC_TO_SATS) >> halvings; 
         schedule [block] = reward;
     }
-    return {};
+    return schedule;
 }
 
 std::optional<Utxo> find_utxo_with_min_value(const std::vector<Utxo>& utxos, long long target) {
     // TODO: among utxos with value >= target, return the one with the smallest value
     //       (std::nullopt if none qualifies)
+    for (const auto& utxo : utxos) {
+        if (utxo.value >= target) {
+            return utxo;
+        }
+    }
     return std::nullopt;
 }
 
@@ -180,5 +188,11 @@ std::map<std::string, UtxoField> create_utxo(
     const std::map<std::string, UtxoField>& extras
 ) {
     // TODO: build a map with {"txid": txid, "vout": vout} merged with `extras`
-    return {};
+    std::map<std::string, UtxoField> utxo = 
+    {
+        {"txid", txid},
+        {"vout", vout}
+    };
+    utxo.insert(extras.begin(), extras.end());
+    return utxo;
 }
